@@ -1,4 +1,4 @@
-module github.com/brucenunk/k8s
+module github.com/brucenunk/testing-k8s
 
 go 1.13
 
