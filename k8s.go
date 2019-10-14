@@ -1,6 +1,7 @@
 package k8s
 
 import (
+	"os"
 	"testing"
 	"time"
 
@@ -24,7 +25,10 @@ type k8s struct {
 }
 
 /// newK8s
-func newK8s(t *testing.T, kubeConfigPath string) k8s {
+func newK8s(t *testing.T) k8s {
+	kubeConfigPath, ok := os.LookupEnv("KUBECONFIG")
+	require.True(t, ok, "env KUBECONFIG must be set")
+
 	cfg, err := clientcmd.BuildConfigFromFlags(masterURL, kubeConfigPath)
 	require.NoError(t, err)
 
@@ -86,13 +90,11 @@ func (k k8s) waitForPodsReady(namespace string, timeout time.Duration) {
 
 /// isPodReady
 func isPodReady(pod corev1.Pod) bool {
-	ready := false
-
 	for _, c := range pod.Status.Conditions {
-		if c.Type == corev1.PodReady && c.Status == corev1.ConditionTrue {
-			ready = true
+		if c.Type == corev1.PodReady {
+			return c.Status == corev1.ConditionTrue
 		}
 	}
 
-	return ready
+	return false
 }
