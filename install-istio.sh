@@ -4,8 +4,6 @@ set -euxo pipefail
 _namespace="istio-system"
 _root="./helm/istio-1.3.2"
 
-kubectl create namespace ${_namespace}
-
 
 # init.
 helm template "${_root}/install/kubernetes/helm/istio-init" \
@@ -30,11 +28,11 @@ kubectl delete pods \
 helm template "${_root}/install/kubernetes/helm/istio" \
   --name istio \
   --namespace ${_namespace} \
-  --values "${_root}/install/kubernetes/helm/istio/values-istio-minimal.yaml" \
+  --values "./values-istio.yaml" \
   | kubectl apply -f -
 
 kubectl wait pod \
   --all \
   --for=condition=ready \
   --namespace ${_namespace} \
-  --timeout=2m
+  --timeout=5m

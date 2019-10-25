@@ -7,4 +7,5 @@ kind create cluster --name ${CLUSTER_NAME}
 export KUBECONFIG="$(kind get kubeconfig-path --name="${CLUSTER_NAME}")"
 
 
+kubectl create namespace "istio-system"
 ./install-istio.sh

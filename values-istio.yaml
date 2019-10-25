@@ -1,0 +1,51 @@
+global:
+  proxy:
+    accessLogFile: "/dev/stdout"
+    envoyStatsd:
+      enabled: false
+      host: # example: statsd-svc.istio-system
+      port: # example: 9125
+  useMCP: false
+
+sidecarInjectorWebhook:
+  enabled: true
+  rewriteAppHTTPProbe: false
+
+pilot:
+  enabled: true
+  sidecar: false
+
+gateways:
+  enabled: true
+  istio-ingressgateway:
+    autoscaleEnabled: false
+    enabled: false
+    resources:
+      requests:
+        cpu: 10m
+        memory: 40Mi
+
+  istio-egressgateway:
+    autoscaleEnabled: false
+    enabled: true
+    resources:
+      requests:
+        cpu: 10m
+        memory: 40Mi
+
+# security:
+#   enabled: false
+
+galley:
+  enabled: false
+
+mixer:
+  policy:
+    enabled: false
+  telemetry:
+    enabled: false
+
+prometheus:
+  enabled: false
+
+
