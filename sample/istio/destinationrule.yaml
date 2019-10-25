@@ -38,3 +38,18 @@ spec:
       tls:
         mode: SIMPLE
         sni: httpbin.org
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: httpbin.org
+  namespace: sample2
+spec:
+  host: httpbin.org
+  trafficPolicy:
+    portLevelSettings:
+    - port:
+        number: 443
+      tls:
+        mode: SIMPLE
+        sni: httpbin.org
