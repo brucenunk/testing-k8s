@@ -6,14 +6,12 @@ import (
 )
 
 const (
-	ClusterName    = "test"
-	KubeConfigPath = "/home/james/.kube/kind-config-" + ClusterName
-	Namespace      = "test"
-	Timeout        = 30 * time.Second
+	Namespace = "test"
+	Timeout   = 30 * time.Second
 )
 
 func TestHttpProbeWorks(t *testing.T) {
-	k8s := newK8s(t, KubeConfigPath)
+	k8s := newK8s(t)
 	nginx := nginx(Namespace, "sample")
 
 	k8s.createNamespace(Namespace)
