@@ -1,10 +1,14 @@
 global:
+  outboundTrafficPolicy:
+    mode: REGISTRY_ONLY
+
   proxy:
     accessLogFile: "/dev/stdout"
     envoyStatsd:
       enabled: false
       host: # example: statsd-svc.istio-system
       port: # example: 9125
+
   useMCP: false
 
 sidecarInjectorWebhook:
