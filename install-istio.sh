@@ -1,38 +1,47 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-_namespace="istio-system"
-_root="./helm/istio-1.3.2"
+NAMESPACE="istio-system"
+ROOT="./helm/istio-1.3.2"
 
+kubectl create ns ${NAMESPACE}
 
 # init.
-helm template "${_root}/install/kubernetes/helm/istio-init" \
+helm template "${ROOT}/install/kubernetes/helm/istio-init" \
   --name istio-init \
-  --namespace ${_namespace} \
+  --namespace ${NAMESPACE} \
   | kubectl apply -f -
 
 kubectl wait job.batch \
   --all \
   --for=condition=complete \
-  --namespace ${_namespace} \
+  --namespace ${NAMESPACE} \
   --timeout=2m
 
-
-# delete completed pods so I can wait for all main pods to become ready in the next step.
-kubectl delete pods \
+kubectl delete jobs \
   --all \
-  --namespace ${_namespace}
+  --namespace ${NAMESPACE}
 
 
 # main.
-helm template "${_root}/install/kubernetes/helm/istio" \
+helm template "${ROOT}/install/kubernetes/helm/istio" \
   --name istio \
-  --namespace ${_namespace} \
+  --namespace ${NAMESPACE} \
   --values "./values-istio.yaml" \
   | kubectl apply -f -
+
+kubectl wait job.batch \
+  --all \
+  --for=condition=complete \
+  --namespace ${NAMESPACE} \
+  --timeout=2m
+
+kubectl delete jobs \
+  --all \
+  --namespace ${NAMESPACE}
 
 kubectl wait pod \
   --all \
   --for=condition=ready \
-  --namespace ${_namespace} \
+  --namespace ${NAMESPACE} \
   --timeout=5m

@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-_cluster_name="test"
-trap "kind delete cluster --name ${_cluster_name}" EXIT
+GO111MODULE="on" go get sigs.k8s.io/kind@v0.6.1
 
-kind create cluster --name ${_cluster_name}
-export KUBECONFIG="$(kind get kubeconfig-path --name="${_cluster_name}")"
+CLUSTER_NAME="test"
+trap "kind delete cluster --name ${CLUSTER_NAME}" EXIT
+
+kind create cluster --name ${CLUSTER_NAME}
 
 ./install-istio.sh
 
-_disable_cache="-count=1"
-go test -v ${_disable_cache} ./...
+go test -v -count=1 ./...
