@@ -40,8 +40,8 @@ kubectl delete jobs \
   --all \
   --namespace ${NAMESPACE}
 
-kubectl wait pod \
+kubectl wait deployments \
   --all \
-  --for=condition=ready \
+  --for=condition=available \
   --namespace ${NAMESPACE} \
   --timeout=5m
