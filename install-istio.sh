@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-NAMESPACE="istio-system"
-ROOT="./helm/istio-1.3.2"
+VERSION=${1:?}
 
-kubectl create ns ${NAMESPACE}
+NAMESPACE="istio-system"
+ROOT="./helm/istio-${VERSION}"
+
 
 # init.
 helm template "${ROOT}/install/kubernetes/helm/istio-init" \
@@ -16,11 +17,12 @@ kubectl wait job.batch \
   --all \
   --for=condition=complete \
   --namespace ${NAMESPACE} \
-  --timeout=2m
+  --timeout=5m
 
 kubectl delete jobs \
   --all \
-  --namespace ${NAMESPACE}
+  --namespace ${NAMESPACE} \
+  --wait=true
 
 
 # main.
@@ -34,14 +36,15 @@ kubectl wait job.batch \
   --all \
   --for=condition=complete \
   --namespace ${NAMESPACE} \
-  --timeout=2m
+  --timeout=5m
 
 kubectl delete jobs \
   --all \
-  --namespace ${NAMESPACE}
-
-kubectl wait deployments \
-  --all \
-  --for=condition=available \
   --namespace ${NAMESPACE} \
-  --timeout=5m
+  --wait=true
+
+kubectl wait pods \
+  --all \
+  --for=condition=ready \
+  --namespace ${NAMESPACE} \
+  --timeout=10m

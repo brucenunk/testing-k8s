@@ -7,14 +7,15 @@ import (
 
 const (
 	Namespace = "test"
-	Timeout   = 30 * time.Second
+	Timeout   = 2 * time.Minute
 )
 
 func TestHttpProbeWorks(t *testing.T) {
 	k8s := newK8s(t)
-	nginx := nginx(Namespace, "sample")
 
 	k8s.createNamespace(Namespace)
-	k8s.createDeployment(nginx)
+	defer k8s.deleteNamespace(Namespace)
+
+	k8s.createDeployment(nginx(Namespace, "sample"))
 	k8s.waitForPodsReady(Namespace, Timeout)
 }

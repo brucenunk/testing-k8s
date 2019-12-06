@@ -62,6 +62,12 @@ func (k k8s) createNamespace(name string) {
 	require.NoError(k.t, err, "create namespace failed")
 }
 
+/// deleteNamespace
+func (k k8s) deleteNamespace(name string) {
+	err := k.cs.CoreV1().Namespaces().Delete(name, &metav1.DeleteOptions{})
+	require.NoError(k.t, err, "delete namespace failed")
+}
+
 /// listPodsE
 func (k k8s) listPodsE(namespace string) (*corev1.PodList, error) {
 	return k.cs.CoreV1().Pods(namespace).List(metav1.ListOptions{})
