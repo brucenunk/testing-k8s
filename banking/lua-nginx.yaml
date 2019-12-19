@@ -1,0 +1,27 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: lua-nginx
+spec:
+  configPatches:
+  - applyTo: HTTP_FILTER
+    match:
+      context: SIDECAR_INBOUND
+      listener:
+        filterChain:
+          filter:
+            name: "envoy.http_connection_manager"
+            subFilter:
+              name: "envoy.router"
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: "envoy.lua"
+        config:
+          inline_code: |
+            function envoy_on_request(request_handler)
+              request_handler:logWarn("the Force is strong with you young Skywalker")
+            end
+  workloadSelector:
+    labels:
+      app: nginx

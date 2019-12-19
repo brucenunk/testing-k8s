@@ -1,4 +1,7 @@
 global:
+  mtls:
+    enabled: true
+
   outboundTrafficPolicy:
     mode: REGISTRY_ONLY
 
@@ -6,24 +9,18 @@ global:
     accessLogFile: "/dev/stdout"
     envoyStatsd:
       enabled: false
-      host: # example: statsd-svc.istio-system
-      port: # example: 9125
 
+  configValidation: true
   useMCP: false
 
-sidecarInjectorWebhook:
+certmanager:
   enabled: true
-  rewriteAppHTTPProbe: false
-
-pilot:
-  enabled: true
-  sidecar: false
 
 gateways:
   enabled: true
   istio-ingressgateway:
     autoscaleEnabled: false
-    enabled: false
+    enabled: true
     resources:
       requests:
         cpu: 10m
@@ -31,7 +28,7 @@ gateways:
 
   istio-egressgateway:
     autoscaleEnabled: false
-    enabled: true
+    enabled: false
     resources:
       requests:
         cpu: 10m
@@ -41,7 +38,7 @@ gateways:
 #   enabled: false
 
 galley:
-  enabled: false
+  enabled: true
 
 mixer:
   policy:
@@ -49,7 +46,15 @@ mixer:
   telemetry:
     enabled: false
 
+pilot:
+  enabled: true
+  sidecar: false
+
 prometheus:
   enabled: false
+
+sidecarInjectorWebhook:
+  enabled: true
+  rewriteAppHTTPProbe: true
 
 

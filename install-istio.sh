@@ -11,6 +11,7 @@ ROOT="./helm/istio-${VERSION}"
 helm template "${ROOT}/install/kubernetes/helm/istio-init" \
   --name istio-init \
   --namespace ${NAMESPACE} \
+  --values "./values-istio.yaml" \
   | kubectl apply -f -
 
 kubectl wait job.batch \
@@ -47,4 +48,4 @@ kubectl wait pods \
   --all \
   --for=condition=ready \
   --namespace ${NAMESPACE} \
-  --timeout=10m
+  --timeout=8m

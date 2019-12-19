@@ -2,15 +2,14 @@ apiVersion: "authentication.istio.io/v1alpha1"
 kind: "Policy"
 metadata:
   name: authn
-  namespace: testing
 spec:
   targets:
-    - name: nginx
-  peers:
-    - mtls: {}
+  - name: nginx
   origins:
-    - jwt:
-        issuer: "banking-auth-provider"
-        jwksUri: "https://coretech-jwks-dev.s3-ap-southeast-2.amazonaws.com/banking/.well-known/jwks.json"
-        jwtHeaders: ["X-Banking-Authorization"]
+  - jwt:
+      issuer: "testing@secure.istio.io"
+      jwksUri: "https://raw.githubusercontent.com/istio/istio/release-1.2/security/tools/jwt/samples/jwks.json"
+      jwtHeaders: ["Jwt"]
+  peers:
+  - mtls: {}
   principalBinding: USE_ORIGIN

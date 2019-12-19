@@ -1,0 +1,60 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: authz
+  name: authz
+spec:
+  selector:
+    matchLabels:
+      app: authz
+  template:
+    metadata:
+      labels:
+        app: authz
+    spec:
+      containers:
+      - image: nginx:alpine
+        name: authz
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: config
+          mountPath: /etc/nginx/conf.d
+          readOnly: true
+      terminationGracePeriodSeconds: 10
+      volumes:
+      - name: config
+        configMap:
+          name: authz
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: authz
+  name: authz
+spec:
+  ports:
+  - name: http
+    port: 80
+  selector:
+    app: authz
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authz
+data:
+  default.conf: |
+    server {
+        listen       80;
+        server_name  authz.banking.svc.cluster.local;
+
+        location / {
+          return 403;
+          #        root   /usr/share/nginx/html;
+          #        index  index.html index.htm;
+        }
+    }
+

@@ -1,0 +1,29 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: authz
+spec:
+  configPatches:
+  - applyTo: HTTP_FILTER
+    match:
+      context: SIDECAR_INBOUND
+      listener:
+        filterChain:
+          filter:
+            name: "envoy.http_connection_manager"
+            subFilter:
+              name: "envoy.router"
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: "envoy.ext_authz"
+        config:
+          failure_mode_allow: false
+          http_service:
+            server_uri:
+              cluster: "outbound|80||authz.banking.svc.cluster.local"
+              timeout: 5s
+              uri: authz.banking.svc.cluster.local
+  workloadSelector:
+    labels:
+      app: nginx
