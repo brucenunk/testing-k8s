@@ -4,8 +4,9 @@ metadata:
   name: istio-ingressgateway-certs
   namespace: istio-system
 spec:
-  commonName: whatever.sample
+  commonName: sample corporation
   dnsNames:
+  - "localhost"
   - "*.sample"
   duration: 24h
   isCA: false
@@ -13,6 +14,7 @@ spec:
     group: certmanager.k8s.io
     kind: Issuer
     name: selfsigning-issuer
+  organization:
+  - sample corp
   secretName: istio-ingressgateway-certs
   renewBefore: 12h
-
