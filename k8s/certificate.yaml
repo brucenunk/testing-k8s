@@ -6,8 +6,7 @@ metadata:
 spec:
   commonName: sample corporation
   dnsNames:
-  - "localhost"
-  - "*.sample"
+  - "*.sample.example.com"
   duration: 24h
   isCA: false
   issuerRef:

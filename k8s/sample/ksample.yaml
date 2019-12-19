@@ -8,3 +8,6 @@ spec:
     spec:
       containers:
       - image: kennethreitz/httpbin
+        name: ksample
+        ports:
+        - containerPort: 80

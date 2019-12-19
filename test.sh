@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euxo pipefail
+
 RQ=${BASH_ARGV[0]}
 H=$(echo ${RQ} | awk -F/ '{print $3}')
 

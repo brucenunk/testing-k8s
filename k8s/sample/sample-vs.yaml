@@ -7,7 +7,7 @@ spec:
   gateways:
   - igw.istio-system
   hosts:
-  - sample.sample
+  - sample.sample.example.com
   http:
   - match:
     - uri:
