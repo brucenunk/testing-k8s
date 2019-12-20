@@ -15,7 +15,8 @@ spec:
         app: sample
     spec:
       containers:
-      - image: kennethreitz/httpbin
+      - args: ["-listen=:80", "-text=sample"]
+        image: hashicorp/http-echo:0.2.3
         name: sample
         ports:
         - containerPort: 80
