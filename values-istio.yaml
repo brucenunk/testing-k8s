@@ -1,4 +1,5 @@
 global:
+  controlPlaneSecurityEnabled: true
   mtls:
     enabled: true
 

@@ -16,7 +16,7 @@ kind create cluster --name ${CLUSTER_NAME} --config kind-config.yaml --image kin
 
 kubectl create ns istio-system
 
-./install-istio.sh "1.2.7"
+./install-istio.sh "1.3.5"
 #KUBECONFIG="${KCFG}" go test -v -count=1 ./...
 
 ./install-knative.sh
