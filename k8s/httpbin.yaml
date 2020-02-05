@@ -26,9 +26,6 @@ spec:
   - httpbin.org
   location: MESH_EXTERNAL
   ports:
-  - name: http
-    number: 80
-    protocol: HTTP
   - name: https
     number: 443
     protocol: HTTPS
@@ -54,7 +51,7 @@ spec:
     - destination:
         host: httpbin.org
         port:
-          number: 80
+          number: 443
         weight: 100
   - match:
     - gateways:
@@ -84,4 +81,20 @@ spec:
         tls:
           mode: ISTIO_MUTUAL
           sni: httpbin.org
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: httpbin
+  namespace: sample
+spec:
+  host: httpbin.org
+  trafficPolicy:
+    portLevelSettings:
+    - port:
+        number: 443
+      tls:
+        mode: SIMPLE
+        sni: httpbin.org
+
 
