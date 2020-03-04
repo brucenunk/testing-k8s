@@ -35,9 +35,6 @@ gateways:
         cpu: 10m
         memory: 40Mi
 
-# security:
-#   enabled: false
-
 galley:
   enabled: true
 

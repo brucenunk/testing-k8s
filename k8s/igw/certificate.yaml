@@ -1,0 +1,19 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: istio-ingressgateway-certs
+  namespace: istio-system
+spec:
+  commonName: sample corporation
+  dnsNames:
+  - "*.example.com"
+  duration: 24h
+  isCA: false
+  issuerRef:
+    group: certmanager.k8s.io
+    kind: Issuer
+    name: selfsigning-issuer
+  organization:
+  - sample corp
+  secretName: istio-ingressgateway-certs
+  renewBefore: 12h

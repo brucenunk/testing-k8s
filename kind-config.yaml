@@ -3,7 +3,7 @@ kind: Cluster
 nodes:
 - role: control-plane
   extraPortMappings:
-  - hostPort: 8080
+  - hostPort: 80
     containerPort: 31380
-  - hostPort: 8443
+  - hostPort: 443
     containerPort: 31390
