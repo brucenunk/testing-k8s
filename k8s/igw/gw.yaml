@@ -23,26 +23,3 @@ spec:
       protocol: HTTP
     hosts:
     - "*"
----
-apiVersion: networking.istio.io/v1alpha3
-kind: EnvoyFilter
-metadata:
-  name: igw
-  namespace: istio-system
-spec:
-  workloadSelector:
-    labels:
-      istio: ingressgateway
-  configPatches:
-  - applyTo: FILTER_CHAIN
-    match:
-      context: GATEWAY
-      listener:
-        portNumber: 443
-    patch:
-      operation: MERGE
-      value:
-        tls_context:
-          common_tls_context:
-            alpn_protocols:
-            - "http/1.1"

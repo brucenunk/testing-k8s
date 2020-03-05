@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
 spec:
   gateways:
-  - argocd
+  - istio-system/igw
   hosts:
   - argocd.example.com
   http:
