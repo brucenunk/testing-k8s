@@ -1,25 +1,26 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-VERSION=${1:?}
-
 NAMESPACE="istio-system"
-ROOT="./tmp/istio-${VERSION}"
-VALUES="./values-istio.yaml"
+VERSION="1.4.3"
+
 
 # cache install locally.
-if [ ! -d ${ROOT} ]; then
-  pushd tmp
+if [ ! -d "/tmp/istio-${VERSION}" ]; then
+  pushd /tmp
   export ISTIO_VERSION=${VERSION}
   curl -sL https://istio.io/downloadIstio | sh -
   popd
 fi
 
+kubectl create namespace ${NAMESPACE}
+
 # init.
-helm template "${ROOT}/install/kubernetes/helm/istio-init" \
+helm template \
+  "/tmp/istio-${VERSION}/install/kubernetes/helm/istio-init" \
   --name istio-init \
   --namespace ${NAMESPACE} \
-  --values ${VALUES} \
+  --values ./values.yaml \
   | kubectl apply -f -
 
 kubectl wait job.batch \
@@ -35,10 +36,11 @@ kubectl delete jobs \
 
 
 # main.
-helm template "${ROOT}/install/kubernetes/helm/istio" \
+helm template \
+  "/tmp/istio-${VERSION}/install/kubernetes/helm/istio" \
   --name istio \
   --namespace ${NAMESPACE} \
-  --values ${VALUES} \
+  --values ./values.yaml \
   | kubectl apply -f -
 
 kubectl wait job.batch \

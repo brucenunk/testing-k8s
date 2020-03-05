@@ -6,13 +6,11 @@ kind load docker-image 519920317464.dkr.ecr.ap-southeast-2.amazonaws.com/corectl
 
 NAMESPACE=argocd
 
-kubectl apply -f ./k8s/argocd/ns.yaml
-kubectl apply -n ${NAMESPACE} -f ./k8s/argocd/.
+kubectl apply -f namespace.yaml
+kubectl apply -n ${NAMESPACE} -f .
 
 kubectl wait pods \
   --all \
   --for=condition=ready \
   --namespace ${NAMESPACE} \
   --timeout=10m
-
-echo $(kubectl -n ${NAMESPACE} get pods -lapp.kubernetes.io/name=argocd-server -o json | jq -r '.items[].metadata.name') > ./tmp/ARGO-PASS
