@@ -2117,7 +2117,7 @@ metadata:
   name: argocd-repo-server
 spec:
   ports:
-  - name: server
+  - name: tcp-server
     port: 8081
     protocol: TCP
     targetPort: 8081

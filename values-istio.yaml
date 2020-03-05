@@ -47,7 +47,6 @@ mixer:
 
 pilot:
   enabled: true
-  enableProtocolSniffingForOutbound: false
   sidecar: false
 
 prometheus:
