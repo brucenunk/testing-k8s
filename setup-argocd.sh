@@ -15,4 +15,4 @@ kubectl wait pods \
   --namespace ${NAMESPACE} \
   --timeout=10m
 
-echo $(kubectl -n ${NAMESPACE} get pods -lapp.kubernetes.io/name=argocd-server -o json | jq -r '.items[].metadata.name') > PASSWD
+echo $(kubectl -n ${NAMESPACE} get pods -lapp.kubernetes.io/name=argocd-server -o json | jq -r '.items[].metadata.name') > ./tmp/ARGO-PASS
