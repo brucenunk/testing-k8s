@@ -4,9 +4,16 @@ set -euxo pipefail
 VERSION=${1:?}
 
 NAMESPACE="istio-system"
-ROOT="./helm/istio-${VERSION}"
+ROOT="./tmp/istio-${VERSION}"
 VALUES="./values-istio.yaml"
 
+# cache install locally.
+if [ ! -d ${ROOT} ]; then
+  pushd tmp
+  export ISTIO_VERSION=${VERSION}
+  curl -sL https://istio.io/downloadIstio | sh -
+  popd
+fi
 
 # init.
 helm template "${ROOT}/install/kubernetes/helm/istio-init" \
