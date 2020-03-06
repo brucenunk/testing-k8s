@@ -2365,11 +2365,6 @@ spec:
     spec:
       containers:
       - command:
-        - sleep
-        - "365000"
-        image: 519920317464.dkr.ecr.ap-southeast-2.amazonaws.com/corectl:v1.0.0-alpha.28
-        name: corectl
-      - command:
         - argocd-server
         - --staticassets
         - /shared/app

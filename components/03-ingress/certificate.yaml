@@ -1,4 +1,4 @@
-apiVersion: certmanager.k8s.io/v1alpha1
+apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: istio-ingressgateway-certs
@@ -10,7 +10,7 @@ spec:
   duration: 24h
   isCA: false
   issuerRef:
-    group: certmanager.k8s.io
+    group: cert-manager.io
     kind: Issuer
     name: selfsigning-issuer
   organization:
